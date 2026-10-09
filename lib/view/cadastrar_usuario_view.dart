@@ -29,6 +29,7 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Nome de Usuário',
+                  icon: Icon(Icons.person),
                 ),
               ),
 
@@ -37,6 +38,7 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
                 decoration: InputDecoration(
                   labelText: 'E-mail',
                   hintText: 'exemplo@email.com',
+                  icon: Icon(Icons.email),
                 ),
               ),
 
@@ -48,7 +50,8 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
                 ],
                 decoration: InputDecoration(
                   labelText: 'Número de Telefone',
-                  hintText: '(99) 9 9999-9999'
+                  hintText: '(99) 9 9999-9999',
+                  icon: Icon(Icons.phone_android),
                 ),
               ),
               
@@ -57,14 +60,16 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: 'Senha'
+                  labelText: 'Senha',
+                  icon: Icon(Icons.password),
                 )
               ),
 
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: 'Confirme a Senha'
+                  labelText: 'Confirme a Senha',
+                  icon: Icon(Icons.password),
                 )
               ),
 

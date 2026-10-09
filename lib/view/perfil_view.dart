@@ -66,7 +66,7 @@ class _PerfilViewState extends State<PerfilView> {
                 child: ElevatedButton(
                   onPressed: null,                      // PRECISA ATIVAR
                                                   
-                  child: Text('Entrar')
+                  child: Text('Salvar Edições')
                 ),
             ),
             
