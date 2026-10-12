@@ -38,7 +38,9 @@ class _RecuperarSenhaViewState extends State<RecuperarSenhaView> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: null,                              // PRECISA ATIVAR
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },                              // PRECISA ATIVAR
                   child: Text('Recuperar Senha')
                 ),
             ),

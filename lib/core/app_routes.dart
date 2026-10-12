@@ -6,6 +6,11 @@ abstract class AppRoutes{
   static const String perfil = '/perfil';
   static const String recuperarSenha = '/recuperar-senha';
   static const String sobre = '/sobre';
+  static const String home = '/home';
+  static const String cadastrarVeiculo = '/cadastrar-veiculo';
+  static const String historico = '/historico';
+  static const String monitoramento = '/monitoramento';
+  static const String cadastrarManutencao = '/cadastrar-manutencao';
 }
 
 //12

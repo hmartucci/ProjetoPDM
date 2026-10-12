@@ -79,7 +79,9 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: null,                              // PRECISA ATIVAR
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },                              // PRECISA ATIVAR
                   child: Text('Entrar')
                 ),
               ),

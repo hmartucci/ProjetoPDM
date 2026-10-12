@@ -11,12 +11,13 @@ class SobreView extends StatelessWidget {
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-
-            Text(
+            AppBar(
+              centerTitle: true,
+              title: Text(
                 'Sobre',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
-            SizedBox(height: 20),
+            ),
 
             Text(
               'Objetivo',
@@ -24,7 +25,9 @@ class SobreView extends StatelessWidget {
             ),
 
             Text(
-              'Proteger o usuário contra ameaças durante a leitura de um QR code.'
+              'Facilitar o gerenciamento de manutenção de veículos,'
+              'permitindo que os usuários acompanhem o histórico de serviços realizados,'
+              'consultem manutenções futuras e tenham acesso a informações importantes sobre seus veículos.',
             ),
 
             SizedBox(height: 20),

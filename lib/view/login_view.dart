@@ -19,8 +19,9 @@ class _LoginViewState extends State<LoginView> {
 //15
         child: Column(
             children: [
+
               Image.asset(
-                'assets/logo_teste.png',
+                'assets/logo_carro.png',
                 height: 120,
                 width: 120,
               ),
@@ -54,10 +55,9 @@ class _LoginViewState extends State<LoginView> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: null,
-                  //  () {
-                  //   Navigator.pushNamed(context, AppRoutes.sobre);
-                  // },                                              // PRECISA ATIVAR
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.home);
+                  },                                              
                   child: Text('Entrar')
                 ),
 

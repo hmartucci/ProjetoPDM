@@ -12,17 +12,18 @@ class _PerfilViewState extends State<PerfilView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+                'Perfil do Usuário',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+      ),
+
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-
-            Text(
-                'Perfil do Usuário',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-            
-            SizedBox(height: 10),
 
             Text(
                 'Alterar dados de cadastro',
@@ -50,7 +51,7 @@ class _PerfilViewState extends State<PerfilView> {
 
             TextFormField(
               decoration: InputDecoration(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.email),
                 labelText: 'E-mail',
               ),
               initialValue: 'nome@email.com',
@@ -64,7 +65,9 @@ class _PerfilViewState extends State<PerfilView> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: null,                      // PRECISA ATIVAR
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },                      // PRECISA ATIVAR
                                                   
                   child: Text('Salvar Edições')
                 ),

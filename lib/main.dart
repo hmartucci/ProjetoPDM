@@ -10,6 +10,11 @@ import 'view/login_view.dart';
 import 'view/perfil_view.dart';
 import 'view/recuperar_senha_view.dart';
 import 'view/sobre_view.dart';
+import 'view/home_view.dart';
+import 'view/cadastrar_veiculo_view.dart';
+import 'view/historico_view.dart';
+import 'view/monitoramento_view.dart';
+import 'view/cadastrar_manutencao_view.dart';
 
 void main(){
   configurarDependencias();
@@ -36,6 +41,11 @@ class MainApp extends StatelessWidget {
         AppRoutes.perfil: (context) => const PerfilView(),
         AppRoutes.recuperarSenha: (context) => const RecuperarSenhaView(),
         AppRoutes.sobre: (context) => const SobreView(),
+        AppRoutes.home: (context) => const HomeView(),
+        AppRoutes.cadastrarVeiculo: (context) => const CadastrarVeiculoView(),
+        AppRoutes.historico: (context) => const HistoricoView(),
+        AppRoutes.monitoramento: (context) => const MonitoramentoView(),
+        AppRoutes.cadastrarManutencao: (context) => const CadastrarManutencaoView(),
       },
     );
   }
