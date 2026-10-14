@@ -15,16 +15,17 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Cadastrar Usuário',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+      ),
+
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-
-            Text(
-                'Cadastrar nova conta',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
 
               TextField(
                 decoration: InputDecoration(

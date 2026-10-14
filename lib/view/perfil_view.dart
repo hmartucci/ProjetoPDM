@@ -20,62 +20,77 @@ class _PerfilViewState extends State<PerfilView> {
               ),
       ),
 
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFE3F2FD), // Início
+              Color(0xFFFFFFFF), // secondaryGlow em baixo
+            ],
+          ),
+        ),
+      
+      
+      
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
 
-            Text(
-                'Alterar dados de cadastro',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            
-            SizedBox(height: 20),
-
-            TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.person),
-                labelText: 'Nome',
-              ),
-
-              validator: (String? value) {
-                if (value == null) {
-                  return 'Campo obrigatório!';
-                }
-                return null;
-
-              },
-            ),
-
-            SizedBox(height: 20),
-
-            TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.email),
-                labelText: 'E-mail',
-              ),
-              initialValue: 'nome@email.com',
-              enabled: false,
-
-            ),
-
-            SizedBox(height: 20),
-
-            SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },                      // PRECISA ATIVAR
-                                                  
-                  child: Text('Salvar Edições')
+              Text(
+                  'Alterar dados de cadastro',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-            ),
-            
+              
+              SizedBox(height: 20),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  icon: Icon(Icons.person),
+                  labelText: 'Nome',
+                ),
+
+                validator: (String? value) {
+                  if (value == null) {
+                    return 'Campo obrigatório!';
+                  }
+                  return null;
+
+                },
+              ),
+
+              SizedBox(height: 20),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  icon: Icon(Icons.email),
+                  labelText: 'E-mail',
+                ),
+                initialValue: 'nome@email.com',
+                enabled: false,
+
+              ),
+
+              SizedBox(height: 20),
+
+              SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },                      // PRECISA ATIVAR
+                                                    
+                    child: Text('Salvar Edições')
+                  ),
+              ),
+              
 
 
-          ],
+            ],
+          ),
         ),
       ),
     );

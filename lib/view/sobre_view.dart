@@ -7,17 +7,18 @@ class SobreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Sobre',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+      ),
+
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            AppBar(
-              centerTitle: true,
-              title: Text(
-                'Sobre',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-            ),
 
             Text(
               'Objetivo',
@@ -30,18 +31,18 @@ class SobreView extends StatelessWidget {
               'consultem manutenções futuras e tenham acesso a informações importantes sobre seus veículos.',
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 50),
 
-            Text(
-              'Desenvolvido por',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            // Text(
+            //   'Desenvolvido por',
+            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // ),
 
-            Text(
-              'Heitor Martucci'
-            ),
+            // Text(
+            //   'Heitor Martucci'
+            // ),
             
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
 
             Card(
               elevation: 0,

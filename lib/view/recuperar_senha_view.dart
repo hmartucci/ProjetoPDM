@@ -12,17 +12,23 @@ class _RecuperarSenhaViewState extends State<RecuperarSenhaView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+                'Recuperar Senha',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+      ),
+
+
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
 
-            Text(
-                'Recuperar Senha',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
             
-            SizedBox(height: 20),
+            SizedBox(height: 80),
+
 
             TextField(
                 keyboardType: TextInputType.emailAddress,
