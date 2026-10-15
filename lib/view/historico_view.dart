@@ -46,8 +46,6 @@ class _HistoricoViewState extends State<HistoricoView> {
 
             
             Card(
-              color: Colors.grey[100],
-
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -68,8 +66,6 @@ class _HistoricoViewState extends State<HistoricoView> {
             SizedBox(height: 10),
 
             Card(
-              color: Colors.grey[100],
-
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -89,8 +85,6 @@ class _HistoricoViewState extends State<HistoricoView> {
             
             SizedBox(height: 10),
             Card(
-              color: Colors.grey[100],
-
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
