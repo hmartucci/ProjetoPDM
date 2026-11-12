@@ -1,6 +1,7 @@
 //07
 import 'package:flutter/material.dart';
 import 'package:p1/core/app_routes.dart';
+import 'package:p1/controller/login_controller.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -9,83 +10,108 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
+
 class _LoginViewState extends State<LoginView> {
+  
+final controller = LoginController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.fromLTRB(20, 150, 20, 20),
 
-//15
-        child: Column(
-            children: [
+  //15
+        child: ListenableBuilder(
+            listenable: controller,
+            builder: (context, _) {
+              return Column(
+                children: [
 
-              Image.asset(
-                'assets/logo_carro.png',
-                height: 120,
-                width: 120,
-              ),
+                  Image.asset(
+                    'assets/logo_carro.png',
+                    height: 120,
+                    width: 120,
+                  ),
 
-              Text(
-                'Login',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
+                  Text(
+                    'Login',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
 
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'E-mail',
-                  hintText: 'exemplo@email.com',
-                ),
-              ),
+                  TextField(
+                    controller: controller.emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: 'E-mail',
+                      hintText: 'exemplo@email.com',
+                      errorText: controller.erroEmail,
+                    ),
+                  ),
 
-              SizedBox(height: 20),
+                  SizedBox(height: 20),
 
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Senha'
-                )
-              ),
+                  TextField(
+                    controller: controller.senhaController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Senha',
+                      errorText: controller.erroSenha,
+                    )
+                  ),
 
-              SizedBox(height: 20),
-              
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.home);
-                  },                                              
-                  child: Text('Entrar')
-                ),
+                  SizedBox(height: 20),
+                  
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final sucesso = controller.entrar();
 
-              ),
+                        if(sucesso) {
+                          Navigator.pushNamed(context, AppRoutes.home);
+                        }
+                      },                                              
+                      child: Text('Entrar')
+                    ),
 
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.recuperarSenha);
-                  },
-                  child: Text('Esqueceu a senha?'),
-                ),
-              ),
+                  ),
 
-              SizedBox(height: 60),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.recuperarSenha);
+                      },
+                      child: Text('Esqueceu a senha?'),
+                    ),
+                  ),
 
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.cadastrarUsuario);
-                },
-                child: Text('Cadastre-se')
-              ),
-            
-            ],
-          ),
+                  SizedBox(height: 60),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.cadastrarUsuario);
+                    },
+                    child: Text('Cadastre-se')
+                  ),
+                
+                ],
+              );
+        
+            }
         
         ),
-      );
+      )
+    );
   }
 }
