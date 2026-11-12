@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:p1/controller/cadastrar_usuario_controller.dart';
 
 class CadastrarUsuarioView extends StatefulWidget {
   const CadastrarUsuarioView({super.key});
@@ -12,6 +13,14 @@ class CadastrarUsuarioView extends StatefulWidget {
 }
 
 class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
+  final controller = CadastrarUsuarioController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,22 +37,27 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
           children: [
 
               TextField(
+                controller: controller.nomeUsuarioController,
                 decoration: InputDecoration(
                   labelText: 'Nome de Usuário',
                   icon: Icon(Icons.person),
+                  errorText: controller.erroNomeUsuario,
                 ),
               ),
 
               TextField(
+                controller: controller.emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'E-mail',
                   hintText: 'exemplo@email.com',
                   icon: Icon(Icons.email),
+                  errorText: controller.erroEmail,
                 ),
               ),
 
               TextField(
+                controller: controller.numeroTelefoneController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -53,24 +67,29 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
                   labelText: 'Número de Telefone',
                   hintText: '(99) 9 9999-9999',
                   icon: Icon(Icons.phone_android),
+                  errorText: controller.erroNumeroTelefone,
                 ),
               ),
               
               SizedBox(height: 30),
 
               TextField(
+                controller: controller.senhaController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Senha',
                   icon: Icon(Icons.password),
+                  errorText: controller.erroSenha,
                 )
               ),
 
               TextField(
+                controller: controller.confirmarSenhaController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Confirme a Senha',
                   icon: Icon(Icons.password),
+                  errorText: controller.erroConfirmarSenha,
                 )
               ),
 
@@ -81,7 +100,11 @@ class _CadastrarUsuarioViewState extends State<CadastrarUsuarioView> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    final sucesso = controller.cadastrar();
+
+                    if (sucesso){
+                      Navigator.pop(context);
+                    }
                   },                              // PRECISA ATIVAR
                   child: Text('Entrar')
                 ),

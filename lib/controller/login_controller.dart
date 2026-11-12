@@ -9,7 +9,7 @@ class LoginController extends ChangeNotifier{
   String? erroSenha;
 
   bool entrar() {
-    final email = emailController.text.trim(); // trim tira espaços
+    final email = emailController.text.trim();
     final senha = senhaController.text;
 
     erroEmail = null;

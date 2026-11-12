@@ -1,5 +1,6 @@
 //09
 import 'package:flutter/material.dart';
+import 'package:p1/controller/recuperar_senha_controller.dart';
 
 class RecuperarSenhaView extends StatefulWidget {
   const RecuperarSenhaView({super.key});
@@ -9,6 +10,14 @@ class RecuperarSenhaView extends StatefulWidget {
 }
 
 class _RecuperarSenhaViewState extends State<RecuperarSenhaView> {
+  final controller = RecuperarSenhaController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,35 +32,46 @@ class _RecuperarSenhaViewState extends State<RecuperarSenhaView> {
 
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
+        child: ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
+            return Column(
+              children: [
 
-            
-            SizedBox(height: 80),
+                
+                SizedBox(height: 80),
 
 
-            TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'E-mail',
-                  hintText: 'exemplo@email.com',
+                TextField(
+                  controller: controller.emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'E-mail',
+                    hintText: 'exemplo@email.com',
+                    errorText: controller.erroEmail,
+                  ),
                 ),
-              ),
-            
-            SizedBox(height: 20),
+                
+                SizedBox(height: 20),
 
-            SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },                              // PRECISA ATIVAR
-                  child: Text('Recuperar Senha')
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final sucesso = controller.recuperarSenha();
+
+                      if (sucesso){
+                        Navigator.pop(context);
+                      }
+                    },                              // PRECISA ATIVAR
+                    child: Text('Recuperar Senha')
+                  ),
                 ),
-            ),
 
-          ],
+              ],
+            );
+          }
         )
       ),
     );
