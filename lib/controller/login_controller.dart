@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-//02
 class LoginController extends ChangeNotifier{
   final emailController = TextEditingController();
   final senhaController = TextEditingController();
 
   String? erroEmail;
   String? erroSenha;
+  bool carregando = false;
 
-  bool entrar() {
+  Future<bool> entrar() async {
     final email = emailController.text.trim();
     final senha = senhaController.text;
 
@@ -32,16 +33,47 @@ class LoginController extends ChangeNotifier{
       return false;
     }
 
-    if (email == 'admin@email.com' && senha == '123456') {
-      return true;
-    }
-
-    erroSenha = 'E-mail ou senha incorretos.';
+    carregando = true;
     notifyListeners();
-    return false;
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: senha,
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-email':
+          erroEmail = 'E-mail inválido.';
+          break;
+        case 'invalid-credential':
+        case 'user-not-found':
+        case 'wrong-password':
+          erroSenha = 'E-mail ou senha incorretos.';
+          break;
+        case 'user-disabled':
+          erroEmail = 'Esta conta foi desativada.';
+          break;
+        case 'too-many-requests':
+          erroSenha = 'Muitas tentativas. Tente novamente mais tarde.';
+          break;
+        case 'network-request-failed':
+          erroSenha = 'Sem conexão com a internet.';
+          break;
+        default:
+          erroSenha = 'Erro ao entrar. Tente novamente.';
+      }
+      return false;
+    } catch (_) {
+      erroSenha = 'Erro inesperado. Tente novamente.';
+      return false;
+    } finally {
+      carregando = false;
+      notifyListeners();
+    }
   }
 
-  // Libera memória quando a tela fecha
   @override
   void dispose() {
     emailController.dispose();

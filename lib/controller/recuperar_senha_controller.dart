@@ -1,12 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-//04
-class RecuperarSenhaController extends ChangeNotifier{
+class RecuperarSenhaController extends ChangeNotifier {
   final emailController = TextEditingController();
 
   String? erroEmail;
+  bool carregando = false;
 
-  bool recuperarSenha() {
+  Future<bool> recuperarSenha() async {
     final email = emailController.text.trim();
 
     erroEmail = null;
@@ -24,14 +25,38 @@ class RecuperarSenhaController extends ChangeNotifier{
       return false;
     }
 
-    if (email == 'admin@email.com') {
-      return true;
-    }
-
-    erroEmail = 'E-mail não encontrado.';
+    carregando = true;
     notifyListeners();
-    return false;
 
+    try {
+      FirebaseAuth.instance.setLanguageCode('pt-BR');
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-email':
+          erroEmail = 'E-mail inválido.';
+          break;
+        case 'user-not-found':
+          erroEmail = 'Não existe conta com este e-mail.';
+          break;
+        case 'too-many-requests':
+          erroEmail = 'Muitas tentativas. Tente novamente mais tarde.';
+          break;
+        case 'network-request-failed':
+          erroEmail = 'Sem conexão com a internet.';
+          break;
+        default:
+          erroEmail = 'Erro ao enviar o e-mail. Tente novamente.';
+      }
+      return false;
+    } catch (_) {
+      erroEmail = 'Erro inesperado. Tente novamente.';
+      return false;
+    } finally {
+      carregando = false;
+      notifyListeners();
+    }
   }
 
   @override

@@ -1,7 +1,11 @@
-//14
 
 import 'package:device_preview_plus/device_preview_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+
 
 import 'core/app_routes.dart';
 import 'core/dependencias.dart';
@@ -19,14 +23,21 @@ import 'view/cadastrar_manutencao_view.dart';
 class AppColors {
   static const primary = Color(0xFFBBDDFF);
   static const secondary = Color(0xFFFFFFFF);
-  static const accent = Color(0xFF1976D2); // destaques: foco, botões, loading
+  static const accent = Color(0xFF1976D2);
 }
 
-void main(){
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   configurarDependencias();
 
   runApp(
     DevicePreview(
+      enabled: !kReleaseMode,
       builder: (context) => MainApp(),
     ),
   );
@@ -40,7 +51,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App',
-      initialRoute: AppRoutes.login,
+      initialRoute: FirebaseAuth.instance.currentUser == null ? AppRoutes.login : AppRoutes.home,
       routes: {
         AppRoutes.cadastrarUsuario: (context) => const CadastrarUsuarioView(),
         AppRoutes.login: (context) => const LoginView(),
@@ -54,7 +65,6 @@ class MainApp extends StatelessWidget {
         AppRoutes.cadastrarManutencao: (context) => const CadastrarManutencaoView(),
       },
 
-      // suas rotas / initialRoute aqui
       home: const HomeView(),
 
       theme: ThemeData(
@@ -67,12 +77,12 @@ class MainApp extends StatelessWidget {
         ).copyWith(
           primary: AppColors.accent,
           surface: AppColors.secondary,
-          onSurface: Colors.black, // texto e ícones pretos por padrão
+          onSurface: Colors.black,
         ),
 
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.primary,
-          foregroundColor: Colors.black, // título e ícones (menu/drawer) pretos
+          foregroundColor: Colors.black,
           surfaceTintColor: Colors.transparent,
           scrolledUnderElevation: 0,
           centerTitle: true,
@@ -89,7 +99,7 @@ class MainApp extends StatelessWidget {
           textColor: Colors.black,
         ),
 
-        cardTheme: const CardThemeData( // CardTheme se o Flutter for < 3.27
+        cardTheme: const CardThemeData(
           color: AppColors.primary,
           surfaceTintColor: Colors.transparent,
           elevation: 2,

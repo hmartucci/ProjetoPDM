@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "783449552405",
+    "project_id": "app-manutencaocarro",
+    "storage_bucket": "app-manutencaocarro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783449552405:android:0edd629c9e3b595c7c801c",
+        "android_client_info": {
+          "package_name": "com.example.p1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcN7fm-4BsbQ1VwhfOPBlDM_Jx4QbrjGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

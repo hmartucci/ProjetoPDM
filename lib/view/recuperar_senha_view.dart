@@ -1,4 +1,3 @@
-//09
 import 'package:flutter/material.dart';
 import 'package:p1/controller/recuperar_senha_controller.dart';
 
@@ -58,14 +57,31 @@ class _RecuperarSenhaViewState extends State<RecuperarSenhaView> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      final sucesso = controller.recuperarSenha();
+                    onPressed: controller.carregando
+                        ? null
+                        : () async {
+                            final sucesso = await controller.recuperarSenha();
 
-                      if (sucesso){
-                        Navigator.pop(context);
-                      }
-                    },                              // PRECISA ATIVAR
-                    child: Text('Recuperar Senha')
+                            if (!context.mounted) return;
+
+                            if (sucesso) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Se existir uma conta com este e-mail, enviamos um link para redefinir a senha.',
+                                  ),
+                                ),
+                              );
+                              Navigator.pop(context);
+                            }
+                          },
+                    child: controller.carregando
+                        ? const SizedBox(
+                            height: 22,
+                            width: 22,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text('Recuperar Senha'),
                   ),
                 ),
 

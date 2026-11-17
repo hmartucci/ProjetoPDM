@@ -1,5 +1,5 @@
-//08
 import 'package:flutter/material.dart';
+import 'package:p1/controller/perfil_controller.dart';
 
 class PerfilView extends StatefulWidget {
   const PerfilView({super.key});
@@ -9,6 +9,21 @@ class PerfilView extends StatefulWidget {
 }
 
 class _PerfilViewState extends State<PerfilView> {
+  final controller = PerfilController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.carregarDados();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +41,8 @@ class _PerfilViewState extends State<PerfilView> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFE3F2FD), // Início
-              Color(0xFFFFFFFF), // secondaryGlow em baixo
+              Color(0xFFE3F2FD),
+              Color(0xFFFFFFFF),
             ],
           ),
         ),
@@ -36,60 +51,74 @@ class _PerfilViewState extends State<PerfilView> {
       
         child: Padding(
           padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
+          child: ListenableBuilder(
+            listenable: controller,
+            builder: (context, _) {
+              if (controller.carregando) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-              Text(
-                  'Alterar dados de cadastro',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              
-              SizedBox(height: 20),
-
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: 'Nome',
-                ),
-
-                validator: (String? value) {
-                  if (value == null) {
-                    return 'Campo obrigatório!';
-                  }
-                  return null;
-
-                },
-              ),
-
-              SizedBox(height: 20),
-
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.email),
-                  labelText: 'E-mail',
-                ),
-                initialValue: 'nome@email.com',
-                enabled: false,
-
-              ),
-
-              SizedBox(height: 20),
-
-              SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },                      // PRECISA ATIVAR
-                                                    
-                    child: Text('Salvar Edições')
+              return Column(
+                children: [
+                  Text(
+                    'Alterar dados de cadastro',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-              ),
-              
 
+                  SizedBox(height: 20),
 
-            ],
+                  TextFormField(
+                    controller: controller.nomeUsuarioController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.person),
+                      labelText: 'Nome',
+                      errorText: controller.erroNomeUsuario,
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  TextFormField(
+                    controller: controller.emailController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.email),
+                      labelText: 'E-mail',
+                    ),
+                    enabled: false,
+                  ),
+
+                  SizedBox(height: 20),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: controller.salvando
+                          ? null
+                          : () async {
+                              final sucesso = await controller.salvar();
+
+                              if (!context.mounted) return;
+
+                              if (sucesso) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Dados atualizados!')),
+                                );
+                                Navigator.pop(context);
+                              }
+                            },
+                      child: controller.salvando
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text('Salvar Edições'),
+                      ),
+                    ),
+                ],
+              );        
+            },
           ),
         ),
       ),

@@ -1,0 +1,37 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "app-manutencaocarro",
+          "appId": "1:783449552405:android:0edd629c9e3b595c7c801c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "app-manutencaocarro",
+          "configurations": {
+            "android": "1:783449552405:android:0edd629c9e3b595c7c801c",
+            "ios": "1:783449552405:ios:322ff1c7ed4bd5457c801c",
+            "web": "1:783449552405:web:93dec15cbc259a347c801c"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

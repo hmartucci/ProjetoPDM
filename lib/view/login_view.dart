@@ -1,4 +1,3 @@
-//07
 import 'package:flutter/material.dart';
 import 'package:p1/core/app_routes.dart';
 import 'package:p1/controller/login_controller.dart';
@@ -28,7 +27,6 @@ final controller = LoginController();
       body: Padding(
         padding: EdgeInsets.fromLTRB(20, 150, 20, 20),
 
-  //15
         child: ListenableBuilder(
             listenable: controller,
             builder: (context, _) {
@@ -74,8 +72,12 @@ final controller = LoginController();
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {
-                        final sucesso = controller.entrar();
+                      onPressed: controller.carregando
+                      ? null
+                      : () async {
+                        final sucesso = await controller.entrar();
+
+                        if(!context.mounted) return;
 
                         if(sucesso) {
                           Navigator.pushNamed(context, AppRoutes.home);
@@ -100,6 +102,7 @@ final controller = LoginController();
 
                   ElevatedButton(
                     onPressed: () {
+                      
                       Navigator.pushNamed(context, AppRoutes.cadastrarUsuario);
                     },
                     child: Text('Cadastre-se')

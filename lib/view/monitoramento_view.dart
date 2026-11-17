@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:p1/controller/monitoramento_controller.dart';
+import 'package:p1/core/formatadores.dart';
+import 'package:p1/model/status_servico.dart';
+import 'package:p1/view/widgets/seletor_veiculo.dart';
 
 class MonitoramentoView extends StatefulWidget {
   const MonitoramentoView({super.key});
@@ -8,7 +12,56 @@ class MonitoramentoView extends StatefulWidget {
 }
 
 class _MonitoramentoViewState extends State<MonitoramentoView> {
-  String selecionado = 'Celta 2012';
+  final controller = MonitoramentoController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.carregar();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Color _cor(int percentual) {
+    if (percentual >= 50) return Colors.green.shade100;
+    if (percentual >= 20) return Colors.yellow.shade100;
+    return Colors.red.shade200;
+  }
+
+  Widget _mensagem(String texto) {
+    return Padding(
+      padding: EdgeInsets.only(top: 40),
+      child: Center(child: Text(texto, textAlign: TextAlign.center)),
+    );
+  }
+
+  Widget _card(StatusServico s) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: Card(
+        color: _cor(s.percentual),
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(s.servico.nome),
+              Text('${s.percentual}%'),
+            ],
+          ),
+          subtitle: Text('Próxima troca em ${formatarKm(s.kmRestantes)} km'),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,92 +74,46 @@ class _MonitoramentoViewState extends State<MonitoramentoView> {
 
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            
-            Align(
-              alignment: Alignment.centerLeft,
-              child: DropdownButton<String>(
-                value: selecionado,
-                items: [
-                  DropdownMenuItem(value: 'Celta 2012', child: Text('Celta 2012')),
-                  DropdownMenuItem(value: 'Uno 2000', child: Text('Uno 2000')),
-                  DropdownMenuItem(value: 'Gol 2015', child: Text('Gol 2015')),
-                ],
+        child: ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
+            final veiculo = controller.veiculoSelecionado;
 
-              onChanged: (novo) {
-                setState(() {
-                  selecionado = novo!;
-                }
-                );
-              }
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            Card(
-              color: Colors.green[100],
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Troca de óleo'),
-                    Text('100%'),
-                  ],
+            return ListView(
+              children: [
+                
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SeletorVeiculo(
+                    veiculos: controller.veiculos,
+                    selecionadoId: controller.veiculoSelecionadoId,
+                    onChanged: controller.selecionarVeiculo,
+                  ),
                 ),
-                subtitle: Text('Próxima troca em 5.000 km'),
-              ),
-            ),
-            SizedBox(height: 20),
 
-            Card(
-              color: Colors.yellow[100],
+                if (veiculo != null)
+                  Text(
+                    'Quilometragem atual: ${formatarKm(veiculo.km)} km',
+                    style: TextStyle(fontSize: 16),
+                  ),
 
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+                SizedBox(height: 20),
 
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Troca de pneus'),
-                    Text('50%'),
-                  ],
-                ),
-                subtitle: Text('Próxima troca em 1.000 km'),
-              ),
-            ),
+                if (controller.carregando)
+                  Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else if (controller.erro != null)
+                  _mensagem(controller.erro!)
+                else if (veiculo == null)
+                  _mensagem('Nenhum veículo cadastrado.')
+                else
+                  ...controller.status.map(_card),
 
-            SizedBox(height: 20),
-
-            Card(
-              color: Colors.red[200],
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Alinhamento e balanceamento'),
-                    Text('20%'),
-                  ],
-                ),
-                subtitle: Text('Próximo alinhamento em 1.000 km'),
-              ),
-            ),
-
-
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

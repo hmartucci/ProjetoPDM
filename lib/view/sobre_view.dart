@@ -1,4 +1,3 @@
-//10
 import 'package:flutter/material.dart';
 
 class SobreView extends StatelessWidget {
@@ -33,16 +32,8 @@ class SobreView extends StatelessWidget {
 
             SizedBox(height: 50),
 
-            // Text(
-            //   'Desenvolvido por',
-            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            // ),
 
-            // Text(
-            //   'Heitor Martucci'
-            // ),
             
-            // SizedBox(height: 20),
 
             Card(
               elevation: 0,

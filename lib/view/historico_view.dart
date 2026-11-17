@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:p1/controller/historico_controller.dart';
 import 'package:p1/core/app_routes.dart';
+import 'package:p1/core/formatadores.dart';
+import 'package:p1/model/manutencao.dart';
+import 'package:p1/view/widgets/seletor_veiculo.dart';
 
 class HistoricoView extends StatefulWidget {
   const HistoricoView({super.key});
@@ -9,8 +13,54 @@ class HistoricoView extends StatefulWidget {
 }
 
 class _HistoricoViewState extends State<HistoricoView> {
-  String selecionado = 'Celta 2012';
-  
+  final controller = HistoricoController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.carregar();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Widget _mensagem(String texto) {
+    return Padding(
+      padding: EdgeInsets.only(top: 40),
+      child: Center(child: Text(texto, textAlign: TextAlign.center)),
+    );
+  }
+
+  Widget _card(Manutencao m) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+
+        child: ListTile(
+          title: Text(m.servico.nome),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Data: ${formatarData(m.data)}'),
+              Text('Quilometragem: ${formatarKm(m.km)} km'),
+              Text(
+                m.valor == null
+                    ? 'Valor: não informado'
+                    : 'Valor: ${formatarValor(m.valor!)}',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,95 +72,48 @@ class _HistoricoViewState extends State<HistoricoView> {
       
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView(
-          children: [
+        child: ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
+            return ListView(
+              children: [
 
-            Align(
-              alignment: Alignment.centerLeft,
-              child: DropdownButton<String>(
-                value: selecionado,
-                items: [
-                  DropdownMenuItem(value: 'Celta 2012', child: Text('Celta 2012')),
-                  DropdownMenuItem(value: 'Uno 2000', child: Text('Uno 2000')),
-                  DropdownMenuItem(value: 'Gol 2015', child: Text('Gol 2015')),
-                ],
-
-              onChanged: (novo) {
-                setState(() {
-                  selecionado = novo!;
-                }
-                );
-              }
-              ),
-            ),
-
-            
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-
-              child: ListTile(
-                title: Text('Troca de óleo'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Data: 01/01/2024'),
-                    Text('Quilometragem: 10.000 km'),
-                    Text('Valor: R\$ 150,00'),
-                  ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SeletorVeiculo(
+                    veiculos: controller.veiculos,
+                    selecionadoId: controller.veiculoSelecionadoId,
+                    onChanged: controller.selecionarVeiculo,
+                  ),
                 ),
-              ),
-            ),
-            
-            SizedBox(height: 10),
 
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+                if (controller.carregando)
+                  Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else if (controller.erro != null)
+                  _mensagem(controller.erro!)
+                else if (controller.veiculos.isEmpty)
+                  _mensagem('Nenhum veículo cadastrado.')
+                else if (controller.manutencoes.isEmpty)
+                  _mensagem('Nenhuma manutenção registrada para este veículo.')
+                else
+                  ...controller.manutencoes.map(_card),
 
-              child: ListTile(
-                title: Text('Troca de pneus'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Data: 15/02/2024'),
-                    Text('Quilometragem: 12.000 km'),
-                    Text('Valor: R\$ 400,00'),
-                  ],
-                ),
-              ),
-            ),
-            
-            SizedBox(height: 10),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-
-              child: ListTile(
-                title: Text('Alinhamento e balanceamento'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Data: 10/03/2024'),
-                    Text('Quilometragem: 15.000 km'),
-                    Text('Valor: R\$ 120,00'),
-                  ],
-                ),
-              ),
-            ),
-            
-          ],
+              ],
+            );
+          },
         ),
 
       ),
 
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, AppRoutes.cadastrarManutencao);
+        onPressed: () async {
+          await Navigator.pushNamed(context, AppRoutes.cadastrarManutencao);
+          if (!mounted) return;
+          controller.carregar();
         },
         icon: Icon(Icons.add),
         label: Text('Nova manutenção'),

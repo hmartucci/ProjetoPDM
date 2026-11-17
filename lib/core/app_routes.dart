@@ -1,5 +1,3 @@
-//11
-
 abstract class AppRoutes{
   static const String cadastrarUsuario = '/cadastrar-usuario';
   static const String login = '/login';
@@ -12,7 +10,3 @@ abstract class AppRoutes{
   static const String monitoramento = '/monitoramento';
   static const String cadastrarManutencao = '/cadastrar-manutencao';
 }
-
-//12
-// flutter pub add device_preview_plus
-// flutter pub add get_it
